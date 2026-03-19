@@ -659,14 +659,64 @@ doot-agents/
 
 ---
 
-## 14. Open Questions (For Ankit's Review)
+## 14. Resolved Decisions (Originally Open Questions)
 
-1. **Business email:** Does Cloud Saathi have nihaan@cloudsaathi.com (Google Workspace) or a regular Gmail? Affects outreach professionalism.
-2. **LinkedIn API access:** Do we have a LinkedIn Developer App for the Cloud Saathi company page? Needed for Agent 1.
-3. **Cal.com vs Calendly:** Self-hosted Cal.com (free, DevOps cred) or Calendly free tier (simpler, 1 event type)?
-4. **Proposal templates:** Do existing proposal templates exist, or do we need to create them from scratch?
-5. **Hetzner region:** EU (cheaper, GDPR-compliant) or US (lower latency to Indian clients)? Or Hetzner's new Singapore DC?
-6. **n8n vs pure Python:** For webhook triggers and cron scheduling, do we want n8n's visual UI or keep everything in Python?
+### Q1: Business Email
+**Decision: Start with personal Gmail. Add Google Workspace before Month 3 (outreach launch).**
+
+Rationale: Launch agents (Day 1) don't send external emails — they handle internal ops (scheduling, invoicing, onboarding). The Sales Outreach agent (Agent 2) launches at Month 3. Before that, set up Google Workspace ($6/user/month for nihaan@cloudsaathi.com, ankit@cloudsaathi.com). Outreach from a branded domain is non-negotiable for credibility.
+
+Action item: Set up Google Workspace by end of Month 2.
+
+### Q2: LinkedIn API Access
+**Decision: Apply for Marketing Developer Platform access immediately. Use manual posting as fallback.**
+
+Research findings:
+- Need to apply via LinkedIn Developer Portal for "Marketing Developer Platform Access"
+- App must be associated with Cloud Saathi's LinkedIn Company Page
+- Company page super admin must approve the app verification request
+- Approval takes 2-4 weeks (not guaranteed)
+- Scopes needed: `w_member_social` for posting
+
+Since LinkedIn Marketing agent is Month 3, we have runway. Apply now so access is ready by then. Until approved, Agent 1 drafts posts → founder manually copies to LinkedIn.
+
+Action item: Nihaan or Ankit to create LinkedIn Developer App and apply for Marketing Developer Platform access.
+
+### Q3: Scheduling Platform
+**Decision: Cal.com self-hosted on the Hetzner VPS.**
+
+Rationale: Free. Open source. Full API access for agent integration. Self-hosting it on the same VPS is trivial (Docker container). It's a portfolio piece — "we run our own scheduling infra, we can do the same for you." Calendly's free tier is limited to 1 event type and has no API.
+
+### Q4: Proposal Templates
+**Decision: Create 2 templates from scratch in Phase 2.**
+
+Templates needed:
+1. **Fractional DevOps Retainer** — ongoing monthly engagement (scope, hours/month, SLA, pricing tiers)
+2. **Infrastructure Audit** — one-time assessment (scope, deliverables, timeline, fixed price)
+
+Both stored as Google Docs templates in a shared Drive folder. Proposal Generator agent (Agent 5) uses these as base and personalizes per lead context.
+
+### Q5: Hetzner Region
+**Decision: Singapore (sin1).**
+
+Research findings:
+- Hetzner launched Singapore DC in 2024 (colocation, not owned)
+- Same CX23 specs available (2 vCPU, 4GB RAM, 40GB NVMe)
+- Lowest latency to India (~30-50ms vs ~150ms from EU)
+- Cloud Saathi's clients are Indian startups — latency matters for n8n webhooks, API responses, and any future client-facing dashboards
+
+Pricing may be marginally higher than EU (~$5 vs $4) but the latency benefit justifies it.
+
+### Q6: n8n vs Pure Python
+**Decision: Hybrid — n8n for triggers + webhooks, Python for agent logic.**
+
+Rationale:
+- **n8n handles:** Cron schedules, webhook listeners, Slack event routing, visual debugging, integration connectors
+- **Python handles:** Agent execution loop, LLM calls, state management, policy engine, trust levels
+
+Why not pure Python: Nihaan is a PM, not an engineer. n8n's visual interface lets him see what triggered what, debug flows, and adjust schedules without touching code. Pure Python would make him dependent on Ankit for every operational change.
+
+Why not pure n8n: n8n's AI nodes lack the sophistication needed for trust graduation, multi-model routing, and stateful agent orchestration. The agent brain must be code.
 
 ---
 
