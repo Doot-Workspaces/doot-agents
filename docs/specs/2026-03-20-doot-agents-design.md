@@ -1,6 +1,6 @@
 # Doot Agents — Design Specification
 
-> **Status:** Draft — Pending Ankit's review
+> **Status:** Draft v2 — Pending Ankit's review (spec review fixes applied)
 > **Authors:** Nihaan Mohammed, Claude (AI architect)
 > **Date:** 2026-03-20
 > **Repo:** `Doot-Workspaces/doot-agents`
@@ -40,9 +40,13 @@ Hiring is not an option at this stage. Autonomous agents are.
 
 ## 3. Agent Roster
 
+### Agent Naming Convention
+
+Agents use **slug names** in code, logs, and messages (e.g., `orchestrator`, `lead-qual`, `proposal-gen`). Numeric IDs below are for document reference only.
+
 ### 3.1 Launch Agents (Day 1) — 6 agents
 
-#### Agent 3: Slack Orchestrator (Hub)
+#### Agent 1: Slack Orchestrator (Hub) — `orchestrator`
 - **Role:** Central coordinator for all agents
 - **Responsibilities:**
   - Route incoming requests to the right specialist agent
@@ -55,7 +59,7 @@ Hiring is not an option at this stage. Autonomous agents are.
 - **Tools:** Slack API, internal agent registry, SQLite state store
 - **Model tier:** Gemini Flash (routing is cheap reasoning)
 
-#### Agent 4: Lead Qualification & Scoring
+#### Agent 2: Lead Qualification & Scoring — `lead-qual`
 - **Role:** Score and route inbound leads
 - **Responsibilities:**
   - Monitor inbound signals (website contact form, LinkedIn DMs, email replies)
@@ -68,7 +72,7 @@ Hiring is not an option at this stage. Autonomous agents are.
 - **Model tier:** Claude Haiku (needs some reasoning for scoring)
 - **Approval gate:** CRM updates auto-execute; lead routing to Sales agent needs approval at L0
 
-#### Agent 5: Proposal & SOW Generator
+#### Agent 3: Proposal & SOW Generator — `proposal-gen`
 - **Role:** Generate custom proposals from templates + lead context
 - **Responsibilities:**
   - Take discovery call notes (pasted into Slack or from meeting summary)
@@ -81,7 +85,7 @@ Hiring is not an option at this stage. Autonomous agents are.
 - **Model tier:** Claude Sonnet (complex reasoning — proposals are high-value)
 - **Approval gate:** Always L0 (proposals go to clients — never auto-send)
 
-#### Agent 6: Invoice & Financial Tracker
+#### Agent 4: Invoice & Financial Tracker — `invoice-tracker`
 - **Role:** Automate billing cycle for retainer clients
 - **Responsibilities:**
   - Generate invoices on schedule (monthly retainers)
@@ -95,7 +99,7 @@ Hiring is not an option at this stage. Autonomous agents are.
 - **Model tier:** Gemini Flash (templated, low reasoning)
 - **Approval gate:** Invoice generation and payment reminders always L0 (financial = always human-approved)
 
-#### Agent 7: Client Onboarding
+#### Agent 5: Client Onboarding — `client-onboard`
 - **Role:** Execute post-close onboarding sequence
 - **Responsibilities:**
   - Send welcome email from template
@@ -109,7 +113,7 @@ Hiring is not an option at this stage. Autonomous agents are.
 - **Model tier:** Gemini Flash (mostly templated actions)
 - **Approval gate:** Welcome email at L0; internal setup (folder creation, channel) can be L1
 
-#### Agent 10: Meeting Scheduler & Follow-up
+#### Agent 6: Meeting Scheduler & Follow-up — `meeting-sched`
 - **Role:** Eliminate scheduling friction and capture meeting outcomes
 - **Responsibilities:**
   - Send availability links (Cal.com) when a meeting is requested
@@ -125,7 +129,7 @@ Hiring is not an option at this stage. Autonomous agents are.
 
 ### 3.2 Month 3 Agents — 3 agents
 
-#### Agent 1: LinkedIn Marketing
+#### Agent 7: LinkedIn Marketing — `linkedin-mkt`
 - **Role:** Build Cloud Saathi's LinkedIn presence
 - **Responsibilities:**
   - Generate content calendar (weekly)
@@ -138,7 +142,7 @@ Hiring is not an option at this stage. Autonomous agents are.
 - **Model tier:** Claude Haiku (creative writing needs moderate quality)
 - **Approval gate:** All posts at L0 (public-facing)
 
-#### Agent 2: Sales/Partnership Outreach
+#### Agent 8: Sales/Partnership Outreach — `sales-outreach`
 - **Role:** Cold email sequences to prospects and potential partners
 - **Responsibilities:**
   - Generate personalized outreach emails from lead context
@@ -151,7 +155,7 @@ Hiring is not an option at this stage. Autonomous agents are.
 - **Model tier:** Claude Haiku (personalization needs moderate reasoning)
 - **Approval gate:** All outbound emails at L0 (client-facing = always human-approved)
 
-#### Agent 8: Content & SEO
+#### Agent 9: Content & SEO — `content-seo`
 - **Role:** Drive organic search traffic to cloudsaathi.com
 - **Responsibilities:**
   - Research trending DevOps keywords and topics
@@ -167,7 +171,7 @@ Hiring is not an option at this stage. Autonomous agents are.
 
 ### 3.3 Nice-to-Have — 1 agent
 
-#### Agent 9: Competitor & Market Intelligence
+#### Agent 10: Competitor & Market Intelligence — `competitor-intel`
 - **Role:** Monitor competitive landscape
 - **Responsibilities:**
   - Track competitor websites, pricing pages, LinkedIn activity
